@@ -1,13 +1,23 @@
 import React from 'react'
-import { AppContext } from './App'; 
+import T from 'prop-types'
+import AppContext from './context'
 
-export const Column = ({index}) => {  
-    const context = React.useContext(AppContext); 
+export const Column = ({index}) => {
+  const context = React.useContext(AppContext)
+  const {arrayUser, randomNumber, endGameValue, arrayComputer} = context
+  const active =
+    randomNumber === index && !arrayUser.includes(index) && !endGameValue
+  const win = arrayUser.includes(index)
+  const lose = arrayComputer.includes(index)
 
-    const active = context.randomNumber === index && !context.arrayUser.includes(index) && !context.endGameValue
-    const win = context.arrayUser.includes(index)
-    const lose = context.arrayComputer.includes(index) 
-    const currentClass = active ? 'active' : win ? 'win' : lose ? 'lose' : ''
+  return (
+    <td
+      data-val={index}
+      className={(active && 'active') || (win && 'win') || (lose && 'lose')}
+    />
+  )
+}
 
-    return <td data-val={index} className={currentClass}></td> 
-}  
+Column.propTypes = {
+  index: T.number,
+}
